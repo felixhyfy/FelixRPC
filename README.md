@@ -1,2 +1,2 @@
-# felixRPC
-一个自制的建议RPC框架
+# FelixRPC
+一个自制的简易RPC框架
