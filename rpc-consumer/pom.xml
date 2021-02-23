@@ -11,5 +11,24 @@
 
     <artifactId>rpc-consumer</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.felix.rpc</groupId>
+            <artifactId>rpc-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.felix.rpc</groupId>
+            <artifactId>rpc-protocol</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.felix.rpc</groupId>
+            <artifactId>rpc-facade</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.felix.rpc</groupId>
+            <artifactId>rpc-registry</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
