@@ -2,6 +2,7 @@ package com.felix.rpc.provider.registry;
 
 import com.felix.rpc.common.RpcServiceHelper;
 import com.felix.rpc.common.ServiceMeta;
+import com.felix.rpc.provider.registry.loadbalancer.ZkConsistenthashloadbalancerimpl;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -9,6 +10,9 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @description: 使用 Apache Curator 初始化 ZooKeeper 客户端
@@ -68,6 +72,12 @@ public class ZookeeperRegistryServiceImpl implements RegistryService {
 
     @Override
     public ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception {
+        Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(serviceName);
+        ServiceInstance<ServiceMeta> instance = new ZkConsistenthashloadbalancerimpl()
+                .select((List<ServiceInstance<ServiceMeta>>) serviceInstances, invokerHashCode);
+        if (instance != null) {
+            return instance.getPayload();
+        }
         return null;
     }
 
