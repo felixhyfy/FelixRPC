@@ -70,7 +70,7 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<FelixRpcProto
 
         //判断bean
         if (serviceBean == null) {
-            throw new RuntimeException(String.format("service not existL %s:%s", request.getClassName(), request.getMethodName()));
+            throw new RuntimeException(String.format("service not exist %s:%s", request.getClassName(), request.getMethodName()));
         }
 
         //动态代理，使用fastClass执行对应service的method
