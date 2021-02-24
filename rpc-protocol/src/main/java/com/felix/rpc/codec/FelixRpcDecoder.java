@@ -96,7 +96,7 @@ public class FelixRpcDecoder extends ByteToMessageDecoder {
                 if (request != null) {
                     //设置协议头和协议体
                     FelixRpcProtocol<FelixRpcRequest> protocol = new FelixRpcProtocol<>();
-                    protocol.setMsgHeader(header);
+                    protocol.setHeader(header);
                     protocol.setBody(request);
                     //输出
                     out.add(protocol);
@@ -107,7 +107,7 @@ public class FelixRpcDecoder extends ByteToMessageDecoder {
                 FelixRpcResponse response = rpcSerialization.deserialize(data, FelixRpcResponse.class);
                 if (response != null) {
                     FelixRpcProtocol<FelixRpcResponse> protocol = new FelixRpcProtocol<>();
-                    protocol.setMsgHeader(header);
+                    protocol.setHeader(header);
                     protocol.setBody(response);
                     out.add(protocol);
                 }

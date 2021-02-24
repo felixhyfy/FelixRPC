@@ -27,7 +27,7 @@ public class FelixRpcEncoder extends MessageToByteEncoder<FelixRpcProtocol<Objec
 
     @Override
     protected void encode(ChannelHandlerContext ctx, FelixRpcProtocol<Object> msg, ByteBuf byteBuf) throws Exception {
-        MsgHeader header = msg.getMsgHeader();
+        MsgHeader header = msg.getHeader();
         //写头信息到bytebuf中，按照自定义的格式顺序
         byteBuf.writeShort(header.getMagic());
         byteBuf.writeByte(header.getVersion());

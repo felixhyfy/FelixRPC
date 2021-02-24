@@ -13,7 +13,7 @@ public class FelixRpcProtocol<T> {
     /**
      * 协议头：存放各种信息
      */
-    private MsgHeader msgHeader;
+    private MsgHeader header;
 
     /**
      * 协议体：存放数据
