@@ -60,7 +60,7 @@ public class RpcConsumer {
         String serviceKey = RpcServiceHelper.buildServiceKey(request.getClassName(), request.getServiceVersion());
 
         //采用一致性hash算法实现服务发现功能
-        //如果有参数的话，采用第一个参数的hashCode，否则采用serviceKey的hashCode
+        //如果有参数的话，采用第一个参数的hashCode，否则采用serviceKey的hashCode。这样做的目的是使所有服务节点接收到的流量更加均匀
         int invokerHashCode = params.length > 0 ? params[0].hashCode() : serviceKey.hashCode();
         //获取调用到的服务节点
         ServiceMeta serviceMetaData = registryService.discovery(serviceKey, invokerHashCode);
@@ -69,6 +69,7 @@ public class RpcConsumer {
             //引导器根据 IP + Port 进行连接
             //使用Netty提供的Promise工具类来实现RPC请求的同步等待
             ChannelFuture future = bootstrap.connect(serviceMetaData.getServiceAddr(), serviceMetaData.getServicePort());
+            //设置channel监听器
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (future.isSuccess()) {
                     log.info("connect rpc server {} on port {} success", serviceMetaData.getServiceAddr(), serviceMetaData.getServicePort());
@@ -78,6 +79,7 @@ public class RpcConsumer {
                     eventLoopGroup.shutdownGracefully();
                 }
             });
+            //将数据发送到远端服务节点
             future.channel().writeAndFlush(protocol);
         }
 
