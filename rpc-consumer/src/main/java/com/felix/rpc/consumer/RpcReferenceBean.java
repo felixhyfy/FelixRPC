@@ -20,7 +20,6 @@ public class RpcReferenceBean implements FactoryBean<Object> {
      * Spring 的 FactoryBean 接口可以帮助我们实现自定义的 Bean，
      * FactoryBean 是一种特种的工厂 Bean，通过 getObject() 方法返回对象，而并不是 FactoryBean 本身。
      */
-
     private Class<?> interfaceClass;
 
     private String serviceVersion;
