@@ -67,11 +67,13 @@ public class RpcConsumerPostProcessor implements ApplicationContextAware, BeanCl
                 //获取到Bean的Class
                 Class<?> clazz = ClassUtils.resolveClassName(beanClassName, this.classLoader);
                 //使用反射解析注解的相关信息，封装到Bean中
+                //分别对每个 Bean 的所有 field 进行检测。如果 field 被声明了 @RpcReference 注解，通过 BeanDefinitionBuilder 构造 RpcReferenceBean 的定义
                 ReflectionUtils.doWithFields(clazz, this::parseRpcReference);
             }
         }
 
         BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+        //遍历definitions map，将所有Bean注册到Spring容器中
         this.rpcRefBeanDefinitions.forEach((beanName, beanDefinition) -> {
             if (context.containsBean(beanName)) {
                 //容器中已经包含该Bean
@@ -84,13 +86,14 @@ public class RpcConsumerPostProcessor implements ApplicationContextAware, BeanCl
     }
 
     /**
-     * 解析@RpcReference注解的相关信息，封装的Bean的definition中，并与field绑定
+     * 对Bean的field解析检测。如果field被声明了@RpcReference注解，通过BeanDefinitionBuilder构造RpcReferenceBean的定义
      *
      * @param field
      */
     private void parseRpcReference(Field field) {
         RpcReference annotation = AnnotationUtils.getAnnotation(field, RpcReference.class);
         if (annotation != null) {
+            //该field被声明了@RpcReference注解
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(RpcReferenceBean.class);
             builder.setInitMethodName(RpcConstants.INIT_METHOD_NAME);
             builder.addPropertyValue("interfaceClass", field.getType());
@@ -100,6 +103,7 @@ public class RpcConsumerPostProcessor implements ApplicationContextAware, BeanCl
             builder.addPropertyValue("timeout", annotation.timeout());
 
             AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+            //存在Definitions map中
             rpcRefBeanDefinitions.put(field.getName(), beanDefinition);
         }
     }

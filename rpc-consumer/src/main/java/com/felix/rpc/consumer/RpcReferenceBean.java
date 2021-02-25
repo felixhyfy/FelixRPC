@@ -13,7 +13,6 @@ import java.lang.reflect.Proxy;
  * @author: Felix
  * @date: 2021/2/24 21:24
  */
-@Data
 public class RpcReferenceBean implements FactoryBean<Object> {
 
     /**
@@ -55,5 +54,25 @@ public class RpcReferenceBean implements FactoryBean<Object> {
                 interfaceClass.getClassLoader(),
                 new Class<?>[]{interfaceClass},
                 new RpcInvokerProxy(serviceVersion, timeout, registryService));
+    }
+
+    public void setInterfaceClass(Class<?> interfaceClass) {
+        this.interfaceClass = interfaceClass;
+    }
+
+    public void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
+
+    public void setRegistryType(String registryType) {
+        this.registryType = registryType;
+    }
+
+    public void setRegistryAddr(String registryAddr) {
+        this.registryAddr = registryAddr;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 }
