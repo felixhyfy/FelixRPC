@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @description:
+ * @description: RPC 服务发布注解
  * @author: Felix
  * @date: 2021/2/25 15:24
  */

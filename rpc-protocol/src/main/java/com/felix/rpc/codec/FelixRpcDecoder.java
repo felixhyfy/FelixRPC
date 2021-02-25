@@ -32,7 +32,7 @@ public class FelixRpcDecoder extends ByteToMessageDecoder {
     */
 
     @Override
-    public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    public final void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         //byteBuf中数据长度小于18，说明没有数据内容，直接返回
         if (in.readableBytes() < ProtocolConstants.HEADER_TOTAL_LEN) {
             return;
@@ -40,7 +40,7 @@ public class FelixRpcDecoder extends ByteToMessageDecoder {
         in.markReaderIndex();
 
         //读取并检验魔数
-        final short magic = in.readShort();
+        short magic = in.readShort();
         if (magic != ProtocolConstants.MAGIC) {
             throw new IllegalArgumentException("magic number is illegal, " + magic);
         }
@@ -74,7 +74,7 @@ public class FelixRpcDecoder extends ByteToMessageDecoder {
          * 在RPC请求调用的场景下，服务提供者需要将协议体内容反序列化成FelixRpcRequest对象；
          * 在RPC结果响应的场景下，服务消费者需要将协议体内容反序列化成FelixRpcResponse对象
          */
-        final MsgType msgTypeEnum = MsgType.findByType(msgType);
+        MsgType msgTypeEnum = MsgType.findByType(msgType);
         if (msgTypeEnum == null) {
             return;
         }

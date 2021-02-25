@@ -2,7 +2,7 @@ package com.felix.rpc.provider.registry;
 
 import com.felix.rpc.common.RpcServiceHelper;
 import com.felix.rpc.common.ServiceMeta;
-import com.felix.rpc.provider.registry.loadbalancer.ZkConsistenthashloadbalancerimpl;
+import com.felix.rpc.provider.registry.loadbalancer.ZkConsistentHashLoadBalancerImpl;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -35,7 +35,7 @@ public class ZookeeperRegistryServiceImpl implements RegistryService {
         CuratorFramework client = CuratorFrameworkFactory.newClient(registryAddr, new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
         //启动客户端
         client.start();
-        final JsonInstanceSerializer<ServiceMeta> serializer = new JsonInstanceSerializer<>(ServiceMeta.class);
+        JsonInstanceSerializer<ServiceMeta> serializer = new JsonInstanceSerializer<>(ServiceMeta.class);
         //初始化服务注册与发现操作对象
         this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceMeta.class)
                 .client(client)
@@ -73,7 +73,7 @@ public class ZookeeperRegistryServiceImpl implements RegistryService {
     @Override
     public ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception {
         Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(serviceName);
-        ServiceInstance<ServiceMeta> instance = new ZkConsistenthashloadbalancerimpl()
+        ServiceInstance<ServiceMeta> instance = new ZkConsistentHashLoadBalancerImpl()
                 .select((List<ServiceInstance<ServiceMeta>>) serviceInstances, invokerHashCode);
         if (instance != null) {
             return instance.getPayload();

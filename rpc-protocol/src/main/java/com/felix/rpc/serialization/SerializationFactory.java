@@ -8,7 +8,7 @@ package com.felix.rpc.serialization;
 public class SerializationFactory {
 
     public static RpcSerialization getRpcSerialization(byte serializationType) {
-        final SerializationTypeEnum typeEnum = SerializationTypeEnum.findByType(serializationType);
+        SerializationTypeEnum typeEnum = SerializationTypeEnum.findByType(serializationType);
 
         switch (typeEnum) {
             case HESSIAN:

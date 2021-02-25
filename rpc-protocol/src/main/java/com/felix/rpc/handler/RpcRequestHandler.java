@@ -30,7 +30,7 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<FelixRpcProto
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FelixRpcProtocol<FelixRpcRequest> protocol) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, FelixRpcProtocol<FelixRpcRequest> protocol) {
         RpcRequestProcessor.submitRequest(() -> {
             FelixRpcProtocol<FelixRpcResponse> responseProtocol = new FelixRpcProtocol<>();
             FelixRpcResponse response = new FelixRpcResponse();
@@ -42,6 +42,7 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<FelixRpcProto
                 //执行RPC调用
                 Object result = handle(protocol.getBody());
                 response.setData(result);
+
                 header.setStatus((byte) MsgStatus.SUCCESS.getCode());
                 //将响应封装到responseProtocol中
                 responseProtocol.setHeader(header);
@@ -49,7 +50,7 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<FelixRpcProto
             } catch (Throwable throwable) {
                 //执行失败，设置失败消息到response中
                 header.setStatus((byte) MsgStatus.FAIL.getCode());
-                response.setMsg(throwable.getMessage());
+                response.setMsg(throwable.toString());
                 log.error("process request {} error", header.getRequestId(), throwable);
             }
             //写入到channelHandlerContext中并刷新

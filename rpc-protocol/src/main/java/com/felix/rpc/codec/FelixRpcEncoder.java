@@ -36,9 +36,9 @@ public class FelixRpcEncoder extends MessageToByteEncoder<FelixRpcProtocol<Objec
         byteBuf.writeByte(header.getStatus());
         byteBuf.writeLong(header.getRequestId());
         //从Serialization Factory中获取序列化算法
-        final RpcSerialization rpcSerialization = SerializationFactory.getRpcSerialization(header.getSerialization());
+        RpcSerialization rpcSerialization = SerializationFactory.getRpcSerialization(header.getSerialization());
         //序列化
-        final byte[] data = rpcSerialization.serialize(msg.getBody());
+        byte[] data = rpcSerialization.serialize(msg.getBody());
         //写入序列化后字符数组的长度和数据内容
         byteBuf.writeInt(data.length);
         byteBuf.writeBytes(data);

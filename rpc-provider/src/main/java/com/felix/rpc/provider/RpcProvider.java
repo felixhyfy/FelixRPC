@@ -15,14 +15,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,6 +81,7 @@ public class RpcProvider implements InitializingBean, BeanPostProcessor {
             ChannelFuture channelFuture = bootstrap.bind(this.serverAddress, this.serverPort).sync();
             log.info("server addr {} started on port {}", this.serverAddress, this.serverPort);
             channelFuture.channel().closeFuture().sync();
+            //System.out.println("测试是否会到达这行");
         } finally {
             boss.shutdownGracefully();
             worker.shutdownGracefully();

@@ -10,10 +10,13 @@ import lombok.Data;
  * @date: 2021/2/23 18:20
  */
 @Data
-@AllArgsConstructor
 public class FelixRpcFuture<T> {
 
     private Promise<T> promise;
     private long timeout;
 
+    public FelixRpcFuture(Promise<T> promise, long timeout) {
+        this.promise = promise;
+        this.timeout = timeout;
+    }
 }
