@@ -20,6 +20,6 @@ public class HelloController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String sayHello() {
-        return helloFacade.hello("mini rpc");
+        return helloFacade.hello(" felix rpc");
     }
 }
