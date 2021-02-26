@@ -12,7 +12,7 @@ import java.util.TreeMap;
  * @author: Felix
  * @date: 2021/2/24 19:32
  */
-public class ZkConsistenthashloadbalancerimpl implements ServiceLoadBalancer<ServiceInstance<ServiceMeta>> {
+public class ZkConsistentHashLoadBalancerImpl implements ServiceLoadBalancer<ServiceInstance<ServiceMeta>> {
 
     /**
      * 虚拟节点数目
@@ -26,7 +26,7 @@ public class ZkConsistenthashloadbalancerimpl implements ServiceLoadBalancer<Ser
 
     @Override
     public ServiceInstance<ServiceMeta> select(List<ServiceInstance<ServiceMeta>> servers, int hashCode) {
-        final TreeMap<Integer, ServiceInstance<ServiceMeta>> ring = makeConsistentHashRing(servers);
+        TreeMap<Integer, ServiceInstance<ServiceMeta>> ring = makeConsistentHashRing(servers);
         return allocateNode(ring, hashCode);
     }
 

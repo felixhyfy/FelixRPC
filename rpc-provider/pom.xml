@@ -28,6 +28,11 @@
             <groupId>com.felix.rpc</groupId>
             <artifactId>rpc-registry</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
 

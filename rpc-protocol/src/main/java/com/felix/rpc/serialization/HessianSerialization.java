@@ -3,6 +3,8 @@ package com.felix.rpc.serialization;
 import com.caucho.hessian.io.HessianSerializerInput;
 import com.caucho.hessian.io.HessianSerializerOutput;
 import com.sun.xml.internal.ws.encoding.soap.SerializationException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,9 +15,11 @@ import java.io.IOException;
  * @author: Felix
  * @date: 2021/2/23 20:37
  */
+@Slf4j
+@Component
 public class HessianSerialization implements RpcSerialization {
     @Override
-    public <T> byte[] serialize(T obj) throws IOException {
+    public <T> byte[] serialize(T obj) {
         if (obj == null) {
             throw new NullPointerException("对象数据为空");
         }
@@ -47,7 +51,7 @@ public class HessianSerialization implements RpcSerialization {
 
         //创建输入流，将字节数组反序列化
         try (ByteArrayInputStream is = new ByteArrayInputStream(data)) {
-            final HessianSerializerInput input = new HessianSerializerInput(is);
+            HessianSerializerInput input = new HessianSerializerInput(is);
             result = (T) input.readObject(clazz);
         } catch (Exception e) {
             throw new SerializationException(e);

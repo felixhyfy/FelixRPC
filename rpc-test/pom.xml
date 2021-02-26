@@ -11,5 +11,12 @@
 
     <artifactId>rpc-test</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.felix.rpc</groupId>
+            <artifactId>rpc-core</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
